@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Student Assessment Form</title>
+    <link rel="stylesheet" th:href="@{css/styles.css}" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <style>
+    .nav-item{ 
+  		text-decoration: none; 
+  		display: inline-block; 
+	}
+	.nav-item:after {
+  		content: '';
+  		display: block;
+  		border-bottom: 2px solid orange;
+  		width: 0;
+  		-webkit-transition: 0.5s ease;
+         transition: 0.5s ease;
+	}
+	.nav-item:hover:after { width: 100%; }
+    .navbar-nav .nav-link {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: red !important;
+    transition: color 0.3s; /* Add transition for smooth color change */
+}
+
+    </style>
+</head>
+<body style="background: #fff;">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="https://srivasaviengg.ac.in" target="_blank">
+            <img src="https://svec.instacks.co/uploads/logos/letjy6c5.jpg" alt="Sri Vasavi Engineering College Logo"
+                 class="college-logo img-fluid">
+            <span class="college-name">Sri Vasavi Engineering College</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="feedback">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="manageQuestions">Add or Remove Questions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="showResults">Results</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="showReport">Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="signup">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container mt-5" th:if="${name != null}">
+    <form id="feedbackForm" action="/saveResponse" method="post" onsubmit="return validateForm()">
+        <h1 class="text-center">Student Assessment Form</h1><br>
+        <p style="font-size:20px;color:green;font-weight:bold;">Welcome Mr/Ms. <span th:text="${name}"></span></p><br>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="companyName">Company Name</label>
+                    <input type="text" placeholder="Company Name" class="form-control" id="companyName" name="companyName">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="regNo">Student Registration Number</label>
+                    <input type="text" placeholder="Student Roll No" class="form-control" id="regNo" name="regNo">
+                </div>
+            </div>
+        </div>
+        <!-- ... (the rest of your form) ... -->
+        <ul>
+            <li th:each="question, questionStat : ${questions}" style="list-style:none;font-weight:bold">
+                <span th:text="${questionStat.count} + '. ' + ${question.questionText}"></span>
+                <ul>
+                    <li th:each="option : ${options}" style="list-style:none">
+                        <label>
+                            <!-- <input type="radio" th:name="'question_' + ${question.id}" th:value="${option.id}"> -->
+                            <input type="radio" th:name="'question.' + ${question.id}" th:value="${option.id}">
+                            
+                            <span th:text="${option.optionText}"></span>
+                        </label>
+                    </li>
+                </ul>
+            </li>
+        </ul>        
+            <div class="text-center"> <!-- Center the button horizontally -->
+                <button type="submit" id="submitButton" class="btn btn-primary fs-1">Submit</button>
+            </div>
+    </form>
+</div>
+<script>
+    function validateForm() {
+        // Get input values
+        var companyName = document.getElementById("companyName").value;
+        var regNo = document.getElementById("regNo").value;
+        // Check if companyName and regNo are not empty
+        if (companyName.trim() === '' || regNo.trim() === '') {
+            alert("Please fill out both Company Name and Student Registration Number.");
+            return false; // Prevent form submission
+        }
+        // Check if at least one radio button is checked for each question
+        var questions = document.querySelectorAll('li[th\\:each]');
+        for (var i = 0; i < questions.length; i++) {
+            var question = questions[i];
+            var radioChecked = question.querySelector('input[type=radio]:checked');
+            if (!radioChecked) {
+                alert("Please select an option for each question.");
+                return false; // Prevent form submission
+            }
+        }
+        return true; // Allow form submission
+    }
+</script>
+</body>
+</html>

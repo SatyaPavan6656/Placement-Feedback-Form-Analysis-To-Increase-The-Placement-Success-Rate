@@ -1,0 +1,176 @@
+<!DOCTYPE htrml>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+
+<head>
+    <meta charset=" UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login & Signup Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{css/demo.css}"/>
+    <style>
+        body, html {
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body class="mx-5">
+<div class="row" >
+    <div class=" col col-md-6 my-5">
+        <div class="text-center mb-5">
+            <img src="https://svec.instacks.co/uploads/logos/letjy6c5.jpg"
+                alt="Sri Vasavi Engineering College Logo" class="ml-50" /><br>
+            <h2 class="animate__animated animate__fadeInDown"
+                style="color:blue;font-family:verdana;"><b>SRI VASAVI ENGINEERING COLLEGE</b></h2>
+            <h5 class="animate__animated animate__fadeInUp" style="color:blue;font-family:verdana;"><b>Pedatadepalli,
+                    Tadepalligudem-534101</b></h5>
+        </div>
+    </div>
+    <div class="col col-md-6 my-3 mt-10">
+        <section class="wrapper active mx-5" style="max-height:fit-content !important">
+            <div class="form login" style="margin-top:20px">
+                <header style="color:blue">Login</header>
+                <form action="login" method="get" id="registrationForm1">
+                    <input type="text" placeholder="Username" id="username" name="username" required />
+                    <input type="password" placeholder="Password" id="password" name="password" required />
+                    <!--  <a href="#">Forgot password?</a>-->
+                    <input type="submit" value="Login" />
+                </form>
+            </div>
+            <div class="form signup">
+                <header>Signup</header>
+                <form action="signupdata" method="post" id="registrationForm">
+                    <input type="text" placeholder="Username" id="signup-username" name="username" required />
+                    <input type="text" placeholder="Email address" id="email" name="email" required />
+                    <input type="numeric" placeholder="Mobile Number" id="mobile" name="mobile" required />
+                    <input type="password" placeholder="Password" id="signup-password" name="password" required />
+                    <input type="password" placeholder="Re-enter password" id="reEnterPassword" name="reenterPassword"
+                        required />
+                    <input type="submit" value="Signup" style="color:blue;font-size:20px;" />
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+    <script>
+        const wrapper = document.querySelector(".wrapper"),
+            signupHeader = document.querySelector(".signup header"),
+            loginHeader = document.querySelector(".login header");
+
+        loginHeader.addEventListener("click", () => {
+            wrapper.classList.add("active");
+        });
+        signupHeader.addEventListener("click", () => {
+            wrapper.classList.remove("active");
+        });
+        
+        
+        // Get references to the form elements
+        const usernameField = document.querySelector("#username");
+        const passwordField = document.querySelector("#password");
+
+
+        // Add event listener for form submission
+        document.getElementById("registrationForm1").addEventListener("submit", validateForm1);
+
+                //Function to validate Username
+                function validateUsername1(username1) {
+                    const usernamePattern = /^[Tt]-[a-zA-Z]{2,3}-\d{2,3}$/;
+                    return usernamePattern.test(username1);
+                }
+
+                // Function to validate password in sign-in
+                function validatePassword1(password1) {
+                    const passwordPattern1 = /^(?=.*[a-zA-Z.])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+                    return passwordPattern1.test(password1);
+                }
+
+                //Function to validate Username
+                function validateUsername(username) {
+                    const usernamePattern = /^[Tt]-[a-zA-Z]{2,3}-\d{2,3}$/;
+                    return usernamePattern.test(username);
+                }
+
+                // Function to validate email
+                function validateEmail(email) {
+                	const emailPattern = /^[a-zA-Z0-9]+@sves@srivasaviengg\.ac\.in$/;
+                    return emailPattern.test(email);
+                }
+
+                // Function to validate password and re-enter password
+                function validatePassword(password, reEnterPassword) {
+                    const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+                    return passwordPattern.test(password) && password === reEnterPassword;
+                }
+
+                // Function to validate Mobile Number
+                function validateMobileNumber(mobileNumber) {
+                    const mobileNumberPattern = /^\d{10}$/; // Assumes a 10-digit mobile number
+                    return mobileNumberPattern.test(mobileNumber);
+                }
+
+
+
+                //Function to check login details
+                function validateForm1(event) {
+                    const username1 = document.getElementById("username").value;
+                    const password1 = document.getElementById("password").value;
+
+                    if (!validateUsername(username1)) {
+                        alert("Username must start with 't' or 'T', followed by a hyphen, 2 or 3 characters, and then two digits.");
+                        event.preventDefault();
+                        return false;
+                    }
+
+                    if (!validatePassword1(password1)) {
+                        alert("Password must be at least 8 characters long, contain at least one capital letter, one digit, and one special character.");
+                        event.preventDefault();
+                        return false;
+                    }
+                    alert("Are You sure want to Submit");
+                    return true;
+                }
+
+        // Add event listener for form submission
+        document.getElementById("registrationForm").addEventListener("submit", validateForm);
+
+                // Function to handle form submission for sign up
+                function validateForm(event) {
+                    const username = document.getElementById("signup-username").value;
+                    const email = document.getElementById("email").value;
+                    const mobileNumber=document.getElementById("mobile").value;
+                    const password = document.getElementById("signup-password").value;
+                    const reEnterPassword = document.getElementById("reEnterPassword").value;
+
+                    if (!validateUsername1(username)) {
+                        alert("Username must start with 't' or 'T', followed by a hyphen, 2 or 3 characters, and then two digits.");
+                        event.preventDefault();
+                        return false;
+                    }
+
+                    if (!validateEmail(email)) {
+                        alert("Email must end with '@sves.org.in'.");
+                        event.preventDefault();
+                        return false;
+                    }
+
+                    if (!validateMobileNumber(mobileNumber)) {
+                        alert("Invalid mobile number");
+                        event.preventDefault();
+                        return false;
+                    }
+
+                    if (!validatePassword(password, reEnterPassword)) {
+                        alert("Password must be at least 8 characters long, contain at least one capital letter, one digit, and one special character. Re-enter password must match the password.");
+                        event.preventDefault();
+                        return false;
+                    }
+
+                    return true;
+                }
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    </script>
+</body>
+</html>

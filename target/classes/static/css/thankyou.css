@@ -1,0 +1,90 @@
+.navbar-toggler-icon {
+    font-size: 1.5rem;
+}
+
+.navbar-nav .nav-link {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: red !important;
+    /* Dark gray color for navbar links */
+    transition: color 0.3s;
+    /* Add transition for smooth hover effect */
+}
+
+.navbar-nav .nav-link:hover {
+    color: orange !important;
+    /* White color on hover */
+}
+
+.navbar-brand img {
+    max-height: 60px;
+    margin-right: 10px;
+}
+
+.navbar-brand .college-name {
+    font-size: 30px;
+    font-weight: bold;
+    color: #6c3082;
+}
+
+.nav-item{ 
+  		text-decoration: none; 
+  		display: inline-block; 
+	}
+	.nav-item:after {
+  		content: '';
+  		display: block;
+  		border-bottom: 2px solid orange;
+  		width: 0;
+  		-webkit-transition: 0.5s ease;
+         transition: 0.5s ease;
+	}
+	.nav-item:hover:after { width: 100%; }
+
+h1 {
+    text-align: center;
+    color: #1e44a7;
+}
+
+.container {
+    max-width: 800px;
+    height:50px;
+    /* Set max-width for better content layout */
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    /* Add some space between questions */
+}
+
+.form-control {
+    max-width: 200px;
+    /* Set max-width for select elements */
+}
+
+/* Style for the container holding the inputs */
+.container.mt-3 {
+    margin-top: 20px;
+}
+
+/* Style for the form inputs */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+/* Style for labels */
+label {
+    font-weight: bold;
+}
+
+/* Style for inputs */
+.form-control {
+    width: 100%;
+}
+
+/* Adjust spacing between inputs in smaller screens */
+@media (max-width: 576px) {
+    .form-group {
+        margin-bottom: 2rem;
+    }
+}

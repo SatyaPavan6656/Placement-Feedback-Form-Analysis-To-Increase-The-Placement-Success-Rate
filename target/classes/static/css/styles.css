@@ -1,0 +1,132 @@
+.navbar-toggler-icon {
+        font-size: 1.5rem;
+    }
+
+    .navbar-nav .nav-link {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: red !important;
+        /* Dark gray color for navbar links */
+        transition: color 0.3s;
+        /* Add transition for smooth hover effect */
+    }
+
+    .navbar-nav .nav-link:hover {
+        color: orange !important;
+        /* White color on hover */
+    }
+
+    .navbar-brand img {
+        max-height: 40px;
+        margin-right: 10px;
+    }
+
+    .navbar-brand .college-name {
+        font-size: 24px;
+        font-weight: bold;
+        color: #6c3082;
+        /* Dark purple color for college name */
+    }
+
+    h1 {
+        text-align: center;
+        color: #1e44a7;
+        /* Blue shade for title */
+    }
+
+    .container {
+        max-width: 800px;
+        /* Set max-width for better content layout */
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+        /* Add some space between questions */
+    }
+
+    .form-control {
+        max-width: 200px;
+        /* Set max-width for select elements */
+    }
+
+    /* Style for the container holding the inputs */
+    .container.mt-3 {
+        margin-top: 20px;
+    }
+
+    /* Style for the form inputs */
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    /* Style for labels */
+    label {
+        font-weight: bold;
+    }
+
+    /* Style for inputs */
+    .form-control {
+        width: 100%;
+    }
+
+    /* Adjust spacing between inputs in smaller screens */
+    @media (max-width: 576px) {
+        .form-group {
+            margin-bottom: 2rem;
+        }
+    }
+
+   /* Original styles for desktop */
+
+/* Styles for small screens (e.g., mobile) */
+@media (max-width: 576px) {
+    .navbar-toggler-icon {
+        font-size: 1rem; /* Reduce the hamburger icon size for smaller screens */
+    }
+
+    .navbar-nav .nav-link {
+        font-size: 1rem; /* Reduce the font size of navigation links */
+    }
+
+    .navbar-brand img {
+        max-height: 30px; /* Decrease the max height of the logo for mobile screens */
+        margin-right: 5px; /* Reduce the right margin */
+    }
+
+    .navbar-brand .college-name {
+        font-size: 18px; /* Decrease the font size of the college name */
+    }
+
+    h1 {
+        font-size: 20px; /* Adjust the title font size for mobile screens */
+    }
+
+    .container {
+        max-width: 100%; /* Make the container full width for mobile screens */
+    }
+
+    .form-group {
+        margin-bottom: 1rem; /* Decrease the spacing between form elements for mobile screens */
+    }
+
+    .form-control {
+        max-width: 100%; /* Make form inputs full width on small screens */
+    }
+    .navbar-nav .nav-link:hover {
+        color: orange !important; /* Change link color to orange on hover */
+    }
+    .navbar-nav .nav-link {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: red !important;
+        transition: color 0.3s; /* Add transition for smooth color change */
+    }
+
+}
+/* Style the button */
+.btn {
+    width: 130px; /* Let the button width adjust to content */
+    font-size: 40px;
+    padding: 10px 20px; /* Adjust padding as needed */
+    transition: width 0.3s; /* Add a transition to the width property */
+}

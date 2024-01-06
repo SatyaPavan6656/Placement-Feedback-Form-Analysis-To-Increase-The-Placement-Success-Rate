@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualization Page</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        .nav-item{ 
+  		text-decoration: none; 
+  		display: inline-block; 
+	}
+	.nav-item:after {
+  		content: '';
+  		display: block;
+  		border-bottom: 2px solid orange;
+  		width: 0;
+  		-webkit-transition: 0.5s ease;
+         transition: 0.5s ease;
+	}
+	.nav-item:hover:after { width: 100%; }
+    .navbar-nav .nav-link {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: red !important;
+    transition: color 0.3s; /* Add transition for smooth color change */
+}
+    	.navbar-toggler-icon {
+        font-size: 1.5rem;
+    }
+
+    .navbar-nav .nav-link {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: red !important;
+        /* Dark gray color for navbar links */
+        transition: color 0.3s;
+        /* Add transition for smooth hover effect */
+    }
+
+    .navbar-nav .nav-link:hover {
+        color: orange !important;
+        /* White color on hover */
+    }
+
+    .navbar-brand img {
+        max-height: 40px;
+        margin-right: 10px;
+    }
+
+    .navbar-brand .college-name {
+        font-size: 24px;
+        font-weight: bold;
+        color: #6c3082;
+        /* Dark purple color for college name */
+    }
+    #barChart {
+    max-width: 100%;
+    height: auto;
+	}
+	#errorMessage {
+            color: red;
+            display: none;
+     }
+    
+    </style>
+    </head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="https://srivasaviengg.ac.in" target="_blank">
+            <img src="https://svec.instacks.co/uploads/logos/letjy6c5.jpg" alt="Sri Vasavi Engineering College Logo"
+                 class="college-logo img-fluid">
+            <span class="college-name">Sri Vasavi Engineering College</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="feedback">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="manageQuestions">Add or Remove Questions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="showResults">Results</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="showReport">Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="signup">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+<h1 class="text-center" style="color:#1E44A7;">Visualization</h1><br>
+<div class="container">
+    <div id="noDataMessage" style="display: none;">
+        <p style="color: red; font-size: 18px; font-weight: bold;">No data found for selected company or date.</p>
+    </div><br>
+    <form  id="resultsForm" method="get" onsubmit="submitForm(Event)">
+        <div class="form-group text-center-align">
+            <label for="companyName" style="font-size:20px;font-weight:bold;color:#6c3082;">Company Name</label>
+            <select class="form-control" id="companyName" name="companyName">
+            	<option>Select a Company</option>
+                <option>Zoho</option>
+                <option>TCS</option>
+                <option>Wipro</option>
+                <option>Capegemini</option>
+                <option>Cognizant</option>
+                <option>Hexaware</option>
+                <option>Infosys</option>
+                <option>Hitahi</option>
+                <option>Tech Mahindra</option>
+                <option>OSI Digital</option>
+                <option>L&T Technologies</option>
+                <option>Emphasys</option>
+                <option>Vmware</option>
+                <option>Deloitte</option>
+                <option>AI 24/7</option>
+                <option>Cipla</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="responseDate"  style="font-size:20px;font-weight:bold;color:#6c3082;">Drive Date</label>
+            <input type="date" class="form-control" id="responseDate" name="responseDate" pattern="\d{4}-\d{2}-\d{2}">
+        </div>
+        <button type="submit" class="btn btn-primary" id="generateBarGraph">Generate Bar Graph</button>
+    </form>
+	</div>
+	    
+	
+    <h2 id="chartTitle" style="text-align: center;"></h2>
+
+    <div style="max-width: 1000px; margin: 0 auto;text-align:center;">
+        <canvas id="barChart" width="400" height="400"></canvas>
+    </div>
+    
+<script>
+
+			//BarGraph
+			document.getElementById('resultsForm').addEventListener('submit', function (event) {
+	            event.preventDefault();
+	            var companyName = document.getElementById('companyName').value;
+	            var responseDate = document.getElementById('responseDate').value;
+
+	            var xhr = new XMLHttpRequest();
+
+
+	            xhr.open('GET', '/getChartData?companyName=' + companyName + '&responseDate=' + responseDate, true);
+
+	            xhr.onload = function () {
+	                if (xhr.status >= 200 && xhr.status < 400) {
+	                    var data = JSON.parse(xhr.responseText);
+
+	                    if (data.labels.length === 0) {
+	                        document.getElementById('noDataMessage').style.display = 'block';
+	                        document.getElementById('chartTitle').innerText = "";
+	                        document.getElementById('barChart').style.display = 'none';
+	                    } else {
+	                        document.getElementById('noDataMessage').style.display = 'none';
+	                        document.getElementById('chartTitle').innerText = companyName + ' Analysis on ' + responseDate;
+	                        document.getElementById('barChart').style.display = 'block';
+
+	                        var ctxBar = document.getElementById('barChart');
+
+	                        if (window.myBarChart) {
+	                            window.myBarChart.destroy();
+	                        }
+
+	                        window.myBarChart = new Chart(ctxBar, {
+	                            type: 'bar',
+	                            data: {
+	                                labels: data.labels,
+	                                datasets: [{
+	                                        label: 'Excellent',
+	                                        data: data.excellentCounts,
+	                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+	                                        borderColor: 'rgba(75, 192, 192, 1)',
+	                                        borderWidth: 2
+	                                    },
+	                                    {
+	                                        label: 'Good',
+	                                        data: data.goodCounts,
+	                                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+	                                        borderColor: 'rgba(54, 162, 235, 1)',
+	                                        borderWidth: 2
+	                                    },
+	                                    {
+	                                        label: 'Average',
+	                                        data: data.averageCounts,
+	                                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+	                                        borderColor: 'rgba(255, 206, 86, 1)',
+	                                        borderWidth: 2
+	                                    },
+	                                    {
+	                                        label: 'Poor',
+	                                        data: data.poorCounts,
+	                                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+	                                        borderColor: 'rgba(255, 99, 132, 1)',
+	                                        borderWidth: 2
+	                                    }
+	                                ]
+	                            },
+	                            options: {
+	                                scales: {
+	                                    x: {
+	                                        display: true,
+	                                        title: {
+	                                            display: true,
+	                                            text: 'Response Categories'
+	                                        }
+	                                    },
+	                                    y: {
+	                                        display: true,
+	                                        beginAtZero: true,
+	                                        title: {
+	                                            display: true,
+	                                            text: 'No of students'
+	                                        }
+	                                    }
+	                                },
+	                                responsive: true,
+	                                maintainAspectRatio: false,
+	                                plugins: {
+	                                    legend: {
+	                                        display: true,
+	                                        position: 'bottom'
+	                                    },
+	                                }
+	                            }
+	                        });
+	                    }
+	                } else {
+	                    console.error('Error:', xhr.status, xhr.statusText);
+	                }
+	            };
+
+	            xhr.onerror = function () {
+	                console.error('Network Error');
+	            };
+
+	            xhr.send();
+	        });
+
+
+        //Validation
+			document.getElementById('resultsForm').addEventListener('submit', function(event) {
+            var companyName = document.getElementById('companyName').value;
+            var responseDate = document.getElementById('responseDate').value;
+
+            if (companyName === "") {
+                alert('Please fill Company Name');
+                event.preventDefault(); // Prevent form submission
+            }
+            else if (responseDate === "") {
+                alert('Please fill Drive Date.');
+                event.preventDefault(); // Prevent form submission
+            }else if (companyName === "" || responseDate === "") {
+                alert('Please fill out both Company Name and Drive Date.');
+                event.preventDefault(); // Prevent form submission
+            }
+            else {
+                if (!confirm('Are you sure you want to submit the form?')) {
+                    event.preventDefault(); // Prevent form submission
+                }
+            }
+        });
+
+    </script>
+
+</body>
+</html>

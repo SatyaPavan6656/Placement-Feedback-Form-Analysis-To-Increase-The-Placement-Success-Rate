@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Thank You</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/thankyou.css}" />
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light d-flex collapse navbar-collapse" id="navbarNav">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="https://srivasaviengg.ac.in" target="_blank">
+                <img src="https://svec.instacks.co/uploads/logos/letjy6c5.jpg"
+                     alt="Sri Vasavi Engineering College Logo"
+                     class="college-logo img-fluid">
+                <span class="college-name">Sri Vasavi Engineering College</span>
+            </a>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+    <a class="nav-link btn btn-sm d-md-none d-lg-inline" href="signup">Logout</a>
+</li>
+    </ul>
+</div>
+    </nav>
+    <div class="container mt-5 text-center">
+        <h1>Thank You for Submitting the Feedback</h1>
+        <form action="login" method="post" id="registrationForm1" class="mt-4">
+            <input type="hidden" placeholder="Username" id="username" name="username" th:value="${user2.username}" required />
+            <input type="hidden" placeholder="Password" id="password" name="password" th:value="${user2.password}" required />
+            <button class="btn btn-primary">
+                <input type="submit" value="Go To Feedback Page" style="background-color:#007bff;color:white;border:none" />
+            </button>
+        </form>
+    </div>
+</body>
+
+</html>
