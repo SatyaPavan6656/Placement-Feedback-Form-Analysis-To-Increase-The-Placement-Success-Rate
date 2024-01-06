@@ -1,0 +1,177 @@
+        /* Import Google font - Poppins */
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            min-height: 100vh;
+        }
+
+        .container {
+            height: 100%;
+        }
+
+        .left-panel {
+            background-color: #fff;
+            padding: 50px 20px 0; /* Increase top padding to move content up */
+            text-align: bottom;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: 200px; /* Center content vertically */
+            height: 70%;
+        }
+
+        .left-panel img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 10px;
+            border-radius: 12px;
+            box-shadow: 0 5px 0px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            color: #fff;
+        }
+
+        .wrapper {
+            position: relative;
+            max-width: 470px;
+            width: 100%;
+            border-radius: 12px;
+            padding: 20px 30px 120px;
+            background: #4070f4;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            min-height: 50vh; /* Set a maximum height */
+            margin: 0 auto;
+            margin: -50px 0; /* Set top and bottom margin equally */
+        }
+
+        .form.login {
+            position: absolute;
+            left: 50%;
+            border-radius: 12px;
+            bottom: -86%;
+            transform: translateX(-50%);
+            width: calc(100% + 220px);
+            padding: 20px 140px;
+            border-radius: 50%;
+            height: 100%;
+            background: #fff;
+            transition: all 0.6s ease;
+            overflow-y: hidden; /* Hide vertical scrollbar */
+        }
+
+        .wrapper.active .form.login {
+            bottom: -10%;
+            border-radius: 35%;
+            box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form header {
+            font-size: 30px;
+            text-align: center;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .form.login header {
+            color: #333;
+            opacity: 0.6;
+        }
+
+        .wrapper.active .form.login header {
+            opacity: 1;
+        }
+
+        .wrapper.active .signup header {
+            opacity: 0.6;
+        }
+
+        .wrapper form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        form input {
+            height: 45px;
+            outline: none;
+            border: none;
+            padding: 0 15px;
+            font-size: 16px;
+            font-weight: 400;
+            color: #333;
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        .form.login input {
+            border: 1px solid #aaa;
+        }
+
+        .form.login input:focus {
+            box-shadow: 0 1px 0 #ddd;
+        }
+
+        form a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        form a:hover {
+            text-decoration: underline;
+        }
+
+        form input[type="submit"] {
+            margin-top: 15px;
+            padding: none;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .form.login input[type="submit"] {
+            background: #4070f4;
+            color: #fff;
+            border: none;
+        }
+
+        /* Add responsive CSS for mobile screens */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .left-panel {
+        order: 1; /* Move left panel to the top */
+        text-align: center;
+        margin-bottom: 20px; /* Add margin between panels */
+    }
+
+    .right-panel {
+        order: 2; /* Move right panel below */
+        background: none; /* Remove the background for the right panel */
+        box-shadow: none; /* Remove the box shadow for the right panel */
+    }
+}

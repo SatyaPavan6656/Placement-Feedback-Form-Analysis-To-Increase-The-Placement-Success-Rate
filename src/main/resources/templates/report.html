@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Page</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        .nav-item{ 
+  		text-decoration: none; 
+  		display: inline-block; 
+	}
+	.nav-item:after {
+  		content: '';
+  		display: block;
+  		border-bottom: 2px solid orange;
+  		width: 0;
+  		-webkit-transition: 0.5s ease;
+         transition: 0.5s ease;
+	}
+	.nav-item:hover:after { width: 100%; }
+    .navbar-nav .nav-link {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: red !important;
+    transition: color 0.3s; /* Add transition for smooth color change */
+}
+    	.navbar-toggler-icon {
+        font-size: 1.5rem;
+    }
+
+    .navbar-nav .nav-link {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: red !important;
+        /* Dark gray color for navbar links */
+        transition: color 0.3s;
+        /* Add transition for smooth hover effect */
+    }
+
+    .navbar-nav .nav-link:hover {
+        color: orange !important;
+        /* White color on hover */
+    }
+
+    .navbar-brand img {
+        max-height: 40px;
+        margin-right: 10px;
+    }
+
+    .navbar-brand .college-name {
+        font-size: 24px;
+        font-weight: bold;
+        color: #6c3082;
+        /* Dark purple color for college name */
+    }
+    #barChart {
+    max-width: 100%;
+    height: auto;
+	}
+	#errorMessage {
+            color: red;
+            display: none;
+     }
+    container {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="https://srivasaviengg.ac.in" target="_blank">
+            <img src="https://svec.instacks.co/uploads/logos/letjy6c5.jpg" alt="Sri Vasavi Engineering College Logo"
+                 class="college-logo img-fluid">
+            <span class="college-name">Sri Vasavi Engineering College</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="feedback">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="manageQuestions">Add or Remove Questions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="showResults">Results</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="signup">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+<h1 class="text-center" style="color:#1E44A7;">Detailed Reports</h1><br>
+<div class="container">
+    <div id="noDataMessage" style="display: none;">
+        <p style="color: red; font-size: 18px; font-weight: bold;">No data found for selected company or date.</p>
+    </div><br>
+        <form action="/displaySortedRatings" method="get">
+        <div class="form-group text-center-align">
+            <label for="companyName" style="font-size:20px;font-weight:bold;color:#6c3082;">Company Name</label>
+            <select class="form-control" id="companyName" name="companyName">
+            	<option>Select a Company</option>
+                <option>Zoho</option>
+                <option>TCS</option>
+                <option>Wipro</option>
+                <option>Capegemini</option>
+                <option>Cognizant</option>
+                <option>Hexaware</option>
+                <option>Infosys</option>
+                <option>Hitahi</option>
+                <option>Tech Mahindra</option>
+                <option>OSI Digital</option>
+                <option>L&T Technologies</option>
+                <option>Emphasys</option>
+                <option>Vmware</option>
+                <option>Deloitte</option>
+                <option>AI 24/7</option>
+                <option>Cipla</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="responseDate"  style="font-size:20px;font-weight:bold;color:#6c3082;">Drive Date</label>
+            <input type="date" class="form-control" id="responseDate" name="responseDate" pattern="\d{4}-\d{2}-\d{2}">
+        </div>
+        <button type="submit" class="btn btn-secondary" id="detailedReport">Detailed Report</button>
+    </form>
+	</div>
+<div class="container mt-4">
+    <h2 class="text-center" style="color:green;">Detailed report</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped rounded">
+            <thead class="thead-dark">
+                <tr class="text-center">
+                    <th>Drive Date</th>
+                    <th>Company Name</th>
+                    <th>Question</th>
+                    <th>Average Rating</th>
+                    <th>Poor Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Assuming 'ratingsList' is the array of objects sorted by questionid -->
+                <tr th:each="rating, rowStat : ${ratingsList}" th:class="${rowStat.odd ? 'odd-row' : 'even-row'}">
+                    <td class="display-5" th:text="${rating.drivedate}"></td>
+                    <td class="display-5" th:text="${rating.companyname}"></td>
+                    <td class="display-5" th:text="${rating.questiontext}"></td>
+                    <td class="display-5" th:text="${rating.avgratingrolls}"></td>
+                    <td class="display-5" th:text="${rating.poorratingrolls}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    document.getElementById('resultsForm').addEventListener('submit', function(event) {
+        var companyName = document.getElementById('companyName').value;
+        var responseDate = document.getElementById('responseDate').value;
+
+        if (companyName === "") {
+            alert('Please fill Company Name');
+            event.preventDefault(); // Prevent form submission
+        }
+        else if (responseDate === "") {
+            alert('Please fill Drive Date.');
+            event.preventDefault(); // Prevent form submission
+        } else if (companyName === "" || responseDate === "") {
+            alert('Please fill out both Company Name and Drive Date.');
+            event.preventDefault(); // Prevent form submission
+        } else {
+            if (!confirm('Are you sure you want to submit the form?')) {
+                event.preventDefault(); // Prevent form submission
+            }
+        }
+    });
+</script>
+</body>
+</html>
